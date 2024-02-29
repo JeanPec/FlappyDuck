@@ -1,0 +1,96 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+#game {
+  width: 80vw;
+  height: 60vh;
+  background-color: #4a7de4;
+  z-index: -1;
+  margin: auto;
+  margin-top: 10vh;
+  overflow: hidden;
+  display: flex;
+}
+.ground {
+    height: 20vh;
+    position: relative;
+    width: 80vw;
+    top: -15vh;
+    z-index: 1;
+    margin:auto;
+    background-image: url("grass-background.jpeg");
+}
+#character {
+  width: 40px;
+  height: 40px;
+  background-color: transparent;
+  border-radius: 50%;
+  position: relative;
+  top: 200px;
+  left: 20px;
+  z-index: 100000;
+}
+.image {
+    position: relative;
+    top: -5px;
+    left: -5px;
+    width: 60px;
+    height: 60px;
+}
+#first-block {
+  width: 60px;
+  background-image: url("tree_trunk.png");
+  height: 100%;
+  left: 120%;
+  z-index: 10;
+  position: relative;
+  background-color: black;
+  animation: 3s block 4s linear infinite;
+}
+#second-block {
+  width: 60px;
+  height: 100%;
+  left: 120%;
+  z-index: 10;
+  position: relative;
+  background-color: black;
+  animation: 3s block 5s linear infinite;
+}
+#first-hole {
+  width: 60px;
+  height: 140px;
+  left: 120%;
+  z-index: 20;
+  position: relative;
+  background-color: #4a7de4;
+  margin-left: -60px;
+  animation: 3s block 4s linear infinite;
+}
+#second-hole {
+  width: 60px;
+  height: 120px;
+  left: 120%;
+  z-index: 20;
+  position: relative;
+  background-color: #4a7de4;
+  margin-left: -60px;
+  animation: 3s block 5s linear infinite;
+}
+@keyframes block {
+  0% {
+    left: 120%;
+  }
+  100% {
+    left: -20%;
+  }
+}
+
+@keyframes jump {
+    0% {
+      background-image: url("duck_move2.png");
+    }
+    100% {
+        background-image: url("duck_move1.png");
+    }
+  }
