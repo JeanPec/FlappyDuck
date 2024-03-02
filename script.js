@@ -62,6 +62,7 @@ currentBlocks.forEach(({ group }) =>
 );
 
 const looseCase = async (instant) => {
+  let counterWin = counter;
   loosing = true;
   clearInterval(blocks);
   character_img.src = "./assets/duck/duck_touched.png";
@@ -75,7 +76,7 @@ const looseCase = async (instant) => {
     if (characterTop > gameBottom) {
       clearInterval(interval);
       character.classList.remove("falling");
-      alert("Game over. Score: " + counter);
+      alert("Game over. Score: " + counterWin);
       location.reload();
     }
     character.style.top = (characterTop + downFactor).toString() + "px";
@@ -99,7 +100,6 @@ async function checkIfLost(
       characterTop > blockHighHeight + holeHeight - 10
     )
     {
-    console.log(characterTop, blockHighHeight, holeHeight, groupWidth);
     looseCase();
     }
   }
@@ -135,14 +135,14 @@ var blocks = setInterval(() => {
     const groupWidth = parseInt(groupStyle.getPropertyValue("width"));
     const groupLeft = parseFloat(groupStyle.getPropertyValue("left"));
     const holeHeight = parseFloat(groupStyle.getPropertyValue("row-gap"));
-    // checkIfLost(
-    //   characterLeft,
-    //   characterTop,
-    //   blockHighHeight + groupTop,
-    //   groupLeft,
-    //   groupWidth,
-    //   holeHeight
-    // );
+    checkIfLost(
+      characterLeft,
+      characterTop,
+      blockHighHeight + groupTop,
+      groupLeft,
+      groupWidth,
+      holeHeight
+    );
   });
   if (!jumping && characterTop < gameBottom - char_height) {
     character.style.top = (characterTop + downFactor).toString() + "px";
