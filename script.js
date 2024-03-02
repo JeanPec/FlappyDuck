@@ -6,24 +6,34 @@ var counter = 0;
 var upFactor = 4;
 let jumping = false;
 let timer = 0;
+let loosing = false;
+const char_height = parseInt(
+  window.getComputedStyle(character).getPropertyValue("height")
+);
+const gameBottom = parseInt(
+  window.getComputedStyle(game).getPropertyValue("height")
+);
 
 var downFactor = 1;
 var currentBlocks = [
   {
-    block: document.getElementById("first-block"),
-    hole: document.getElementById("first-hole"),
+    group: document.getElementById("first-group"),
   },
   {
-    block: document.getElementById("second-block"),
-    hole: document.getElementById("second-hole"),
+    group: document.getElementById("second-group"),
   },
 ];
 
 async function moveUp() {
+  if(loosing) return false;
   jumping = true;
-  character_img.src = "duck_jump1.png";
+  character_img.src = "./assets/duck/duck_jump1.png";
   let jumpCount = 0;
   const interval = setInterval(() => {
+    if(loosing){
+      clearInterval(interval);
+      return false;
+    }
     var characterTop = parseInt(
       window.getComputedStyle(character).getPropertyValue("top")
     );
@@ -37,27 +47,60 @@ async function moveUp() {
       jumpCount = 0;
     }
     jumpCount++;
-    if (jumpCount % 3 == 0) character_img.src = "duck_jump1.png";
-    if (jumpCount % 3 == 1) character_img.src = "duck_jump2.png";
-    if (jumpCount % 3 == 2) character_img.src = "duck_jump3.png";
+    if (jumpCount % 3 == 0) character_img.src = "./assets/duck/duck_jump1.png";
+    if (jumpCount % 3 == 1) character_img.src = "./assets/duck/duck_jump2.png";
+    if (jumpCount % 3 == 2) character_img.src = "./assets/duck/duck_jump3.png";
   }, 1);
 }
 
-currentBlocks.forEach(({ hole }) =>
-  hole.addEventListener("animationiteration", () => {
-    var random = Math.random() * 45 + 25;
-    hole.style.top = random + "%";
+currentBlocks.forEach(({ group }) =>
+  group.addEventListener("animationiteration", () => {
+    var randomMove = parseInt(Math.random() * 45)+30;
+    group.style.top = "-"+randomMove+"%";
     counter++;
   })
 );
 
-function checkIfLost(characterLeft, characterTop, barLeft, holeTop) {
-  return false;
-  if (barLeft < characterLeft && barLeft + 60 > characterLeft) {
-    if (characterTop < holeTop || characterTop - 140 > holeTop) {
+const looseCase = async (instant) => {
+  loosing = true;
+  clearInterval(blocks);
+  character_img.src = "./assets/duck/duck_touched.png";
+  let characterTop = parseFloat(
+    window.getComputedStyle(character).getPropertyValue("top")
+  );
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  character_img.src = "./assets/duck/duck_falling.png";
+  character.classList.add("falling");
+  const interval = setInterval(() => {
+    if (characterTop > gameBottom) {
+      clearInterval(interval);
+      character.classList.remove("falling");
       alert("Game over. Score: " + counter);
-      clearInterval(blocks);
       location.reload();
+    }
+    character.style.top = (characterTop + downFactor).toString() + "px";
+    characterTop = parseFloat(
+      window.getComputedStyle(character).getPropertyValue("top")
+    );
+  }, 10);
+};
+
+async function checkIfLost(
+  characterLeft,
+  characterTop,
+  blockHighHeight,
+  groupLeft,
+  groupWidth,
+  holeHeight
+) {
+  if (characterLeft > groupLeft && characterLeft < groupLeft + groupWidth) {
+    if (
+      characterTop < blockHighHeight ||
+      characterTop > blockHighHeight + holeHeight - 10
+    )
+    {
+    console.log(characterTop, blockHighHeight, holeHeight, groupWidth);
+    looseCase();
     }
   }
 }
@@ -82,21 +125,31 @@ var blocks = setInterval(() => {
   var characterLeft = parseInt(
     window.getComputedStyle(character).getPropertyValue("left")
   );
-  currentBlocks.forEach(({ block, hole }) => {
-    var blockLeft = parseInt(
-      window.getComputedStyle(block).getPropertyValue("left")
+  currentBlocks.forEach(({ group }) => {
+    const groupStyle = window.getComputedStyle(group);
+
+    const blockHighHeight = parseFloat(
+      groupStyle.getPropertyValue("grid-template-rows").split(" ")[0]
     );
-    var holeTop = parseInt(
-      window.getComputedStyle(hole).getPropertyValue("top")
-    );
-    checkIfLost(characterLeft, characterTop, blockLeft, holeTop);
+    const groupTop = parseInt(groupStyle.getPropertyValue("top"));
+    const groupWidth = parseInt(groupStyle.getPropertyValue("width"));
+    const groupLeft = parseFloat(groupStyle.getPropertyValue("left"));
+    const holeHeight = parseFloat(groupStyle.getPropertyValue("row-gap"));
+    // checkIfLost(
+    //   characterLeft,
+    //   characterTop,
+    //   blockHighHeight + groupTop,
+    //   groupLeft,
+    //   groupWidth,
+    //   holeHeight
+    // );
   });
-  if (characterTop < 480 && !jumping) {
+  if (!jumping && characterTop < gameBottom - char_height) {
     character.style.top = (characterTop + downFactor).toString() + "px";
   }
-  if(!jumping) {
-    if (timer % 60 == 0) character_img.src = "duck_move1.png";
-    if (timer % 60 == 20) character_img.src = "duck_move2.png";
-    if (timer % 60 == 40) character_img.src = "duck_move3.png";
+  if (!jumping) {
+    if (timer % 60 == 0) character_img.src = "./assets/duck/duck_move1.png";
+    if (timer % 60 == 20) character_img.src = "./assets/duck/duck_move2.png";
+    if (timer % 60 == 40) character_img.src = "./assets/duck/duck_move3.png";
   }
 }, 1);

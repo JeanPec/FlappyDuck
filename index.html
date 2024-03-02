@@ -1,19 +1,26 @@
 <!DOCTYPE html>
 <html lang="en" onclick="moveUp()">
-    <head>
-        <meta charset="UTF-8">
-        <title>Flappy Duck</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <div id="game">
-            <div id="character"><img id="char_img" src="duck_move2.png" class="image"></img></div>
-            <div id="first-block"></div>
-            <div id="first-hole"></div>
-            <div id="second-block"></div>
-            <div id="second-hole"></div>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Flappy Duck</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="game">
+        <div id="character"><img id="char_img" src="./assets/duck/duck_move2.png" class="image"></img></div>
+        <div id="first-group" class="group first">
+            <div id="first-block-high"><img id="first-block-high_img" src="./assets/pipe/tree_trunk.png" class="pipe revert"></div>
+            <div id="first-block-low"><img id="first-block-low_img" src="./assets/pipe/tree_trunk.png" class="pipe"></div>
         </div>
-        <div class="ground"></div>
-    </body>
-    <script src="script.js"></script>
+        <div id="second-group" class="group second">
+            <div id="second-block-high"><img id="second-block-high_img" src="./assets/pipe/tree_trunk.png" class="pipe revert"></div>
+            <div id="second-block-low"><img id="second-block-low_img" src="./assets/pipe/tree_trunk.png" class="pipe"></div>
+        </div>
+    </div>
+    <div class="ground"></div>
+</body>
+<script src="script.js"></script>
+
 </html>

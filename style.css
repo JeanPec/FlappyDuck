@@ -11,20 +11,21 @@
   margin-top: 10vh;
   overflow: hidden;
   display: flex;
+  user-select: none;
+  pointer-events: none;
 }
 .ground {
-    height: 20vh;
+    height: 200px;
     position: relative;
     width: 80vw;
-    top: -15vh;
+    top: -20vh;
     z-index: 1;
     margin:auto;
-    background-image: url("grass-background.jpeg");
+    background-image: url("./assets/background/grass-background.png");
 }
 #character {
   width: 40px;
   height: 40px;
-  background-color: transparent;
   border-radius: 50%;
   position: relative;
   top: 200px;
@@ -38,59 +39,51 @@
     width: 60px;
     height: 60px;
 }
-#first-block {
-  width: 60px;
-  background-image: url("tree_trunk.png");
+.pipe {
+  width: 100%;
   height: 100%;
+}
+.revert {
+  transform: rotateX(180deg)
+}
+.group {
+  pointer-events: none;
+  top: -50%;
+  display: grid;
+  row-gap: 200px;
+  grid-template-rows: 1fr 1fr;
+  width: 60px;
+  height: 200%;
   left: 120%;
   z-index: 10;
   position: relative;
-  background-color: black;
-  animation: 3s block 4s linear infinite;
 }
-#second-block {
-  width: 60px;
+.group> * {
   height: 100%;
-  left: 120%;
-  z-index: 10;
-  position: relative;
-  background-color: black;
-  animation: 3s block 5s linear infinite;
+  z-index:10;
 }
-#first-hole {
-  width: 60px;
-  height: 140px;
-  left: 120%;
-  z-index: 20;
-  position: relative;
-  background-color: #4a7de4;
-  margin-left: -60px;
+.falling {
+  animation: fall 2s steps(2, end) infinite;
+}
+.first {
   animation: 3s block 4s linear infinite;
 }
-#second-hole {
-  width: 60px;
-  height: 120px;
-  left: 120%;
-  z-index: 20;
-  position: relative;
-  background-color: #4a7de4;
-  margin-left: -60px;
+.second {
   animation: 3s block 5s linear infinite;
 }
 @keyframes block {
-  0% {
+  from {
     left: 120%;
   }
-  100% {
-    left: -20%;
+  to {
+    left: -30%;
   }
 }
-
-@keyframes jump {
-    0% {
-      background-image: url("duck_move2.png");
-    }
-    100% {
-        background-image: url("duck_move1.png");
-    }
+@keyframes fall {
+  from {
+    transform: rotateY(0deg);
   }
+  to {
+    transform: rotateY(360deg);
+  }
+}
